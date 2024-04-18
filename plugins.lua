@@ -1,5 +1,12 @@
 local plugins = {
   {
+    "mfussenegger/nvim-lint",
+    event = "VeryLazy",
+    config = function ()
+     require "custom.configs.lint"
+    end
+  },
+  {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
@@ -7,6 +14,14 @@ local plugins = {
         "clangd",
         "clang-format",
         "codelldb",
+        "typescript-language-server",
+        "eslint-lsp",
+        "prettier",
+        "pyright",
+        "mypy",
+        "ruff",
+        "black",
+        "debugpy",
       },
     },
   },
@@ -19,7 +34,7 @@ local plugins = {
   },
   {
     "jose-elias-alvarez/null-ls.nvim",
-    ft = "go",
+    ft = {"go", "python"},
     event = "VeryLazy",
     opts = function()
       return require "custom.configs.null-ls"
@@ -71,6 +86,17 @@ local plugins = {
     end
   },
   {
+    "mfussenegger/nvim-dap-python",
+    ft = "python",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function(_, opts)
+      local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+      require("dap-python").setup(path)
+    end,
+  },
+  {
     "olexsmir/gopher.nvim",
     ft = "go",
     config = function(_, opts)
@@ -81,5 +107,26 @@ local plugins = {
       vim.cmd [[silent! GoInstallDeps]]
     end,
   },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    setup = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = "markdown",
+  },
+  {
+    "vinnymeller/swagger-preview.nvim",
+    run = "npm install -g swagger-ui-watcher",
+    config = function ()
+      require("swagger-preview").setup({
+        -- The port to run the preview server on
+        port = 8090,
+        -- The host to run the preview server on
+        host = "localhost",
+      })
+    end
+  },
+  { "nvim-neotest/nvim-nio" },
 }
 return plugins

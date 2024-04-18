@@ -10,6 +10,15 @@ local opts = {
 
     -- C++ Formatting
     null_ls.builtins.formatting.clang_format,
+
+    -- TS formatting
+    null_ls.builtins.formatting.eslint,
+    null_ls.builtins.formatting.prettier,
+
+    -- Python formatting
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.diagnostics.mypy,
+    null_ls.builtins.diagnostics.ruff,
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
